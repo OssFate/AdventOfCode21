@@ -11,14 +11,14 @@ class Code
 
             var config = new Config(args);
 
-            Console.WriteLine($"Running command: {config.Command}");
+            Console.WriteLine($"Running day: {config.Command}\n");
 
             var fileText = ReadAllText(config.FilePath);
 
             return config.Command switch
             {
-                "one" => new Day01_One().DoWork(fileText),
-                "two" => new Day02_Two().DoWork(fileText),
+                var com when com == "one" || com == "1" => new Day01_One().DoWork(fileText),
+                var com when com == "two" || com == "2" => new Day02_Two().DoWork(fileText),
                 _ => Template.NoneOption(),
             };
         }

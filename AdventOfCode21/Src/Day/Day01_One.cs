@@ -18,7 +18,7 @@ public class Day01_One : Template
             prev = current;
         }
 
-        Console.WriteLine(acc);
+        Console.WriteLine($"The amount of measurements larger than the previous one are: {acc}.");
     }
 
     protected override void SecondProblem(string input)
@@ -44,7 +44,7 @@ public class Day01_One : Template
             prev = current;
         }
 
-        Console.WriteLine(acc);
+        Console.WriteLine($"The amount of sums larger than the previous sum are: {acc}.");
     }
 
     // Some code from someone on github
