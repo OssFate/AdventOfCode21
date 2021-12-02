@@ -1,47 +1,52 @@
-﻿namespace AdventOfCode21
+﻿namespace AdventOfCode21;
+
+class Code
 {
-    class Code
+    public static int WorkToDo(string[] args)
     {
-        public static int WorkToDo(string[] args)
+        try
         {
-            try
-            {
-                var config = new Config(args);
+            // For testing is something is wrong
+            //args = new string[] { "one", "../../../Input/input01" };
 
-                Console.WriteLine($"Running command: {config.Command}");
+            var config = new Config(args);
 
-                return config.Command switch
-                {
-                    "one" => new One().DoWork(ReadAllText(config.FilePath)),
-                    _ => Template.NoneOption(),
-                };
-            }
-            catch(Exception ex)
+            Console.WriteLine($"Running command: {config.Command}");
+
+            var fileText = ReadAllText(config.FilePath);
+
+            return config.Command switch
             {
-                Console.WriteLine(ex.Message);
-                return -1;
-            }
+                "one" => new Day01_One().DoWork(fileText),
+                "two" => new Day02_Two().DoWork(fileText),
+                _ => Template.NoneOption(),
+            };
         }
-
-        private static string ReadAllText(string filePath)
+        catch (Exception ex)
         {
-            return File.ReadAllText(filePath);
+            Console.WriteLine(ex.Message);
+            return -1;
         }
-
     }
 
-    struct Config
+    private static string ReadAllText(string filePath)
     {
-        public string Command;
-        public string FilePath;
+        return File.ReadAllText(filePath);
+    }
 
-        public Config(string[] args)
-        {
-            if (args.Length < 2)
-                throw new ArgumentException("Not enough arguments, please use this way: \"{day} {file}\"");
+}
 
-            Command = args[0];
-            FilePath = args[1];
-        }
+struct Config
+{
+    public string Command;
+    public string FilePath;
+
+    public Config(string[] args)
+    {
+        if (args.Length < 2)
+            throw new ArgumentException("Not enough arguments, please use this way: \"{day} {file}\"");
+
+        Command = args[0];
+        FilePath = args[1];
     }
 }
