@@ -6,7 +6,7 @@ class Code
     {
         try
         {
-            // For testing is something is wrong
+            // For debuging if something is wrong
             //args = new string[] { "one", "../../../Input/input01" };
 
             var config = new Config(args);
@@ -19,6 +19,7 @@ class Code
             {
                 var com when com == "one" || com == "1" => new Day01_One().DoWork(fileText),
                 var com when com == "two" || com == "2" => new Day02_Two().DoWork(fileText),
+                var com when com == "three" || com == "3" => new Day03_Three().DoWork(fileText),
                 _ => Template.NoneOption(),
             };
         }
