@@ -11,15 +11,16 @@ class Code
 
             var config = new Config(args);
 
-            Console.WriteLine($"Running day: {config.Command}\n");
+            Console.WriteLine($"Running day: {config.Day}\n");
 
-            var fileText = ReadAllText(config.FilePath);
+            var fileText = ReadAllLines(config.FilePath);
 
-            return config.Command switch
+            return config.Day switch
             {
                 var com when com == "one" || com == "1" => new Day01_One().DoWork(fileText),
                 var com when com == "two" || com == "2" => new Day02_Two().DoWork(fileText),
                 var com when com == "three" || com == "3" => new Day03_Three().DoWork(fileText),
+                var com when com == "four" || com == "4" => new Day04_Four().DoWork(fileText),
                 _ => Template.NoneOption(),
             };
         }
@@ -30,16 +31,16 @@ class Code
         }
     }
 
-    private static string ReadAllText(string filePath)
+    private static string[] ReadAllLines(string filePath)
     {
-        return File.ReadAllText(filePath);
+        return File.ReadAllLines(filePath);
     }
 
 }
 
 struct Config
 {
-    public string Command;
+    public string Day;
     public string FilePath;
 
     public Config(string[] args)
@@ -47,7 +48,7 @@ struct Config
         if (args.Length < 2)
             throw new ArgumentException("Not enough arguments, please use this way: \"{day} {file}\"");
 
-        Command = args[0];
+        Day = args[0];
         FilePath = args[1];
     }
 }

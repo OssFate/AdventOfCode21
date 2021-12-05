@@ -2,10 +2,8 @@
 
 public class Day01_One : Template
 {
-    protected override void FirstProblem(string input)
+    protected override void FirstProblem(string[] lines)
     {
-        var lines = input.Split('\n');
-
         int acc = 0;
         int prev = int.MaxValue;
 
@@ -21,9 +19,8 @@ public class Day01_One : Template
         Console.WriteLine($"The amount of measurements larger than the previous one are: {acc}.");
     }
 
-    protected override void SecondProblem(string input)
+    protected override void SecondProblem(string[] lines)
     {
-        var lines = input.Split('\n');
         var numLines = new List<int>();
         lines.ToList().ForEach(l =>
         {

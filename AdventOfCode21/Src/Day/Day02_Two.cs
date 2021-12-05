@@ -2,10 +2,8 @@
 
 public class Day02_Two : Template
 {
-    protected override void FirstProblem(string input)
+    protected override void FirstProblem(string[] lines)
     {
-        var lines = input.Split("\n");
-
         var pAcc = 0;
         var dAcc = 0;
 
@@ -27,10 +25,8 @@ public class Day02_Two : Template
         Console.WriteLine($"Planned course total result is: {result}");
     }
 
-    protected override void SecondProblem(string input)
+    protected override void SecondProblem(string[] lines)
     {
-        var lines = input.Split("\n");
-
         var pAcc = 0;
         var dAcc = 0;
         var aAcc = 0;

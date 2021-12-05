@@ -2,9 +2,8 @@
 
 public class Day03_Three : Template
 {
-    protected override void FirstProblem(string input)
+    protected override void FirstProblem(string[] lines)
     {
-        var lines = input.Split("\n");
         var lineAmmount = lines.Length;
 
         var bitsNum = new int[lines[0].Length];
@@ -32,10 +31,8 @@ public class Day03_Three : Template
         Console.WriteLine($"Submarine power consumption is: {result}");
     }
 
-    protected override void SecondProblem(string input)
+    protected override void SecondProblem(string[] lines)
     {
-        var lines = input.Split("\n");
-
         var bitsO2 = FindThatO2(lines, 0);
         var bitsOther = FindThatOther(lines, 0);
 

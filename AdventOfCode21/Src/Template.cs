@@ -2,9 +2,9 @@
 
 public abstract class Template
 {
-    protected abstract void FirstProblem(string input);
-    protected abstract void SecondProblem(string input);
-    public int DoWork(string input)
+    protected abstract void FirstProblem(string[] lines);
+    protected abstract void SecondProblem(string[] lines);
+    public int DoWork(string[] input)
     {
         Console.WriteLine("\t>> First Problem <<");
         FirstProblem(input);
