@@ -1,6 +1,6 @@
-﻿namespace AdventOfCode21;
+﻿namespace AdventOfCode21.Day;
 
-public class Day02_Two : Template
+public class Day02Two : Template
 {
     protected override void FirstProblem(string[] lines)
     {
@@ -38,9 +38,9 @@ public class Day02_Two : Template
             switch (command[0])
             {
                 case "forward":
-                    var X = int.Parse(command[1]);
-                    pAcc += X;
-                    dAcc += aAcc * X;
+                    var x = int.Parse(command[1]);
+                    pAcc += x;
+                    dAcc += aAcc * x;
                     break;
                 case "down":
                     aAcc += int.Parse(command[1]);
@@ -48,9 +48,7 @@ public class Day02_Two : Template
                 case "up":
                     aAcc -= int.Parse(command[1]);
                     break;
-                default:
-                    break;
-            };
+            }
         }
 
         var result = pAcc * dAcc;

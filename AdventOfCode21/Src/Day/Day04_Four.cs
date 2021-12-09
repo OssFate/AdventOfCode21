@@ -1,6 +1,6 @@
-﻿namespace AdventOfCode21;
+﻿namespace AdventOfCode21.Day;
 
-public class Day04_Four : Template
+public class Day04Four : Template
 {
     protected override void FirstProblem(string[] lines)
     {
@@ -9,7 +9,7 @@ public class Day04_Four : Template
 
         var ballots = lines[0].Split(",");
 
-        for(int i = 2; i < lines.Length; i++)
+        for(var i = 2; i < lines.Length; i++)
         {
             if (!string.IsNullOrEmpty(lines[i]))
             {
@@ -34,7 +34,7 @@ public class Day04_Four : Template
 
         var ballots = lines[0].Split(",");
 
-        for (int i = 2; i < lines.Length; i++)
+        for (var i = 2; i < lines.Length; i++)
         {
             if (!string.IsNullOrEmpty(lines[i]))
             {
@@ -52,34 +52,28 @@ public class Day04_Four : Template
         Console.WriteLine($"Last Bingo: {result} on Ballot: {ballot}");
     }
 
-    private (int, string) PlayToLoseBingo(List<Bingo> boards, string[] ballots)
+    private static (int, string) PlayToLoseBingo(List<Bingo> boards, string[] ballots)
     {
         var boardNum = boards.Count;
 
         foreach (var ballot in ballots)
             foreach (var board in boards)
             {
-                if (!board.isWinner)
-                {
-                    var result = board.PlayBallot(ballot);
-                    if(result > 0)
-                    {
-                        if(boardNum > 1)
-                        {
-                            board.isWinner = true;
-                            boardNum--;
-                            continue;
-                        }
-
-                        return (result, ballot);
-                    }
-                }
+                if (board.IsWinner) continue;
+                
+                var result = board.PlayBallot(ballot);
+                
+                if (result <= 0) continue;
+                if (boardNum <= 1) return (result, ballot);
+                
+                board.IsWinner = true;
+                boardNum--;
             }
 
         return (-1, "LUL");
     }
 
-    private (int , string) PlayToWinBingo(List<Bingo> boards, string[] ballots)
+    private static (int , string) PlayToWinBingo(List<Bingo> boards, string[] ballots)
     {
         foreach (var ballot in ballots)
             foreach (var board in boards)
@@ -92,30 +86,31 @@ public class Day04_Four : Template
         return (-1, "LUL");
     }
 
-    internal class Bingo
+    private class Bingo
     {
-        private string[][] Board;
-        private bool[,] playBoard;
-        public bool isWinner = false;
+        private readonly string[][] _board;
+        private readonly bool[,] _playBoard;
+        public bool IsWinner;
 
         public Bingo(string[] input)
         {
-            Board = new string[5][];
-            playBoard = new bool[5, 5];
+            _board = new string[5][];
+            _playBoard = new bool[5, 5];
 
-            for (int i = 0; i < input.Length; i++)
+            for (var i = 0; i < input.Length; i++)
             {
                 var row = input[i].Trim().Replace("  ", " ").Split(" ");
-                Board[i] = row;
+                _board[i] = row;
             }
         }
 
         public int PlayBallot(string ballot)
         {
             var (x, y) = FindCoordinate(ballot);
-            if (x + y >= 0)
-                if (IsBingo(x, y))
-                    return SumUnmarked() * int.Parse(ballot);
+            if (x + y < 0) return -1;
+            
+            if (IsBingo(x, y))
+                return SumUnmarked() * int.Parse(ballot);
 
             return -1;
         }
@@ -124,10 +119,10 @@ public class Day04_Four : Template
         {
             var sum = 0;
 
-            for(int i = 0; i < Board.Length; i++)
-                for(int j = 0; j < Board[0].Length; j++)
-                    if(!playBoard[i, j])
-                        sum += int.Parse(Board[i][j]);
+            for(var i = 0; i < _board.Length; i++)
+                for(var j = 0; j < _board[0].Length; j++)
+                    if(!_playBoard[i, j])
+                        sum += int.Parse(_board[i][j]);
 
             return sum;
         }
@@ -136,60 +131,34 @@ public class Day04_Four : Template
         {
             var isRowBingo = true;
             var isColBingo = true;
-            var isDiaLRBingo = false;
-            var isDiaRLBingo = false;
 
-            //if (x == y)
-            //{
-            //    isDiaLRBingo = true;
-            //    for (int i = 0; i < Board.Length; i++)
-            //        if (!playBoard[i, i])
-            //        {
-            //            isDiaLRBingo = false;
-            //            break;
-            //        }
-            //}
-
-            //if (x + y == 4)
-            //{
-            //    isDiaRLBingo = true;
-            //    for (int i = 0; i < Board.Length; i++)
-            //        if (!playBoard[i, Board.Length - 1 - i])
-            //        {
-            //            isDiaRLBingo = false;
-            //            break;
-            //        }
-            //}
-
-
-            for (int i = 0; i < Board.Length; i++)
-                if(!playBoard[x, i])
+            for (var i = 0; i < _board.Length; i++)
+                if(!_playBoard[x, i])
                 {
                     isColBingo = false;
                     break;
                 }
 
-            for (int i = 0; i < Board.Length; i++)
-                if (!playBoard[i, y])
+            for (var i = 0; i < _board.Length; i++)
+                if (!_playBoard[i, y])
                 {
                     isRowBingo = false;
                     break;
                 }
 
-            return isRowBingo || isColBingo || isDiaLRBingo || isDiaRLBingo;
+            return isRowBingo || isColBingo;
         }
 
         private (int, int) FindCoordinate(string ballot)
         {
-            for (int i = 0; i < Board.Length; i++)
+            for (var i = 0; i < _board.Length; i++)
             {
-                for (var j = 0; j < Board[i].Length; j++)
+                for (var j = 0; j < _board[i].Length; j++)
                 {
-                    if (Board[i][j] == ballot)
-                    {
-                        playBoard[i, j] = true;
-                        return (i, j);
-                    }
+                    if (_board[i][j] != ballot) continue;
+                    
+                    _playBoard[i, j] = true;
+                    return (i, j);
                 }
             }
 

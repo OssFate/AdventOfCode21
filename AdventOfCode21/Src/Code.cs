@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode21;
+﻿using AdventOfCode21.Day;
+
+namespace AdventOfCode21;
 
 class Code
 {
@@ -6,7 +8,7 @@ class Code
     {
         try
         {
-            // For debuging if something is wrong
+            // For debugging if something is wrong
             //args = new string[] { "one", "../../../Input/input01" };
 
             var config = new Config(args);
@@ -17,10 +19,11 @@ class Code
 
             return config.Day switch
             {
-                var com when com == "one" || com == "1" => new Day01_One().DoWork(fileText),
-                var com when com == "two" || com == "2" => new Day02_Two().DoWork(fileText),
-                var com when com == "three" || com == "3" => new Day03_Three().DoWork(fileText),
-                var com when com == "four" || com == "4" => new Day04_Four().DoWork(fileText),
+                "one" or "1" => new Day01One().DoWork(fileText),
+                "two" or "2" => new Day02Two().DoWork(fileText),
+                "three" or "3" => new Day03Three().DoWork(fileText),
+                "four" or "4" => new Day04Four().DoWork(fileText),
+                "five" or "5" => new Day05Five().DoWork(fileText),
                 _ => Template.NoneOption(),
             };
         }
@@ -38,10 +41,10 @@ class Code
 
 }
 
-struct Config
+internal struct Config
 {
-    public string Day;
-    public string FilePath;
+    public readonly string Day;
+    public readonly string FilePath;
 
     public Config(string[] args)
     {

@@ -1,10 +1,10 @@
-﻿namespace AdventOfCode21;
+﻿namespace AdventOfCode21.Day;
 
-public class Day03_Three : Template
+public class Day03Three : Template
 {
     protected override void FirstProblem(string[] lines)
     {
-        var lineAmmount = lines.Length;
+        var lineAmount = lines.Length;
 
         var bitsNum = new int[lines[0].Length];
 
@@ -19,7 +19,7 @@ public class Day03_Three : Template
 
         for (var j = 0; j < lines[0].Length; j++)
         {
-            var flag = bitsNum[j] > lineAmmount / 2;
+            var flag = bitsNum[j] > lineAmount / 2;
             bitsGamma[j] = flag ? "1" : "0";
             bitsEpsilon[j] = flag ? "0" : "1";
         }
@@ -43,7 +43,7 @@ public class Day03_Three : Template
         Console.WriteLine($"Submarine life support rating is: {result}");
     }
 
-    private string FindThatO2(string[] array, int index)
+    private static string FindThatO2(string[] array, int index)
     {
         if(array.Length == 1)
             return array[0];
@@ -53,22 +53,18 @@ public class Day03_Three : Template
 
         foreach (var line in array)
         {
-            if (!string.IsNullOrEmpty(line))
-            {
-                if (line[index] == '1')
-                    o2One.Add(line);
-                else
-                    o2Zero.Add(line);
-            }
+            if (string.IsNullOrEmpty(line)) continue;
+            
+            if (line[index] == '1')
+                o2One.Add(line);
+            else
+                o2Zero.Add(line);
         }
 
-        if (o2One.Count >= o2Zero.Count)
-            return FindThatO2(o2One.ToArray(), index + 1);
-
-        return FindThatO2(o2Zero.ToArray(), index + 1);
+        return FindThatO2(o2One.Count >= o2Zero.Count ? o2One.ToArray() : o2Zero.ToArray(), index + 1);
     }
 
-    private string FindThatOther(string[] array, int index)
+    private static string FindThatOther(string[] array, int index)
     {
         if (array.Length == 1)
             return array[0];
@@ -78,18 +74,14 @@ public class Day03_Three : Template
 
         foreach (var line in array)
         {
-            if (!string.IsNullOrEmpty(line))
-            {
-                if (line[index] == '0')
-                    o2Zero.Add(line);
-                else
-                    o2One.Add(line);
-            }
+            if (string.IsNullOrEmpty(line)) continue;
+            
+            if (line[index] == '0')
+                o2Zero.Add(line);
+            else
+                o2One.Add(line);
         }
 
-        if (o2Zero.Count <= o2One.Count)
-            return FindThatOther(o2Zero.ToArray(), index + 1);
-
-        return FindThatOther(o2One.ToArray(), index + 1);
+        return FindThatOther(o2Zero.Count <= o2One.Count ? o2Zero.ToArray() : o2One.ToArray(), index + 1);
     }
 }
